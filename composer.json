@@ -1,0 +1,31 @@
+{
+    "name": "cedricziel/baserow-php",
+    "description": "Baserow client for PHP",
+    "type": "library",
+    "license": "Apache 2",
+    "autoload": {
+        "psr-4": {
+            "CedricZiel\\BaserowPhp\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CedricZiel\\BaserowPhp\\Test\\": "test/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Cedric Ziel",
+            "email": "cedric@cedric-ziel.com"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "psr/http-client": "^1.0",
+        "nyholm/psr7": "^1.8"
+    },
+    "require-dev": {
+        "symfony/http-client": "^6.4|^7.1",
+        "phpunit/phpunit": "^11.2"
+    }
+}
