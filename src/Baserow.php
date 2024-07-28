@@ -19,6 +19,7 @@ class Baserow
         $psr17Factory = new Psr17Factory();
         $request = $psr17Factory
             ->createRequest('POST', sprintf('%s%s', rtrim($this->baseUrl, '/'), '/api/auth/token/'))
+            ->withHeader('Content-Type', 'application/json')
             ->withBody($psr17Factory->createStream(json_encode([
                 'username' => $username,
                 'password' => $password,

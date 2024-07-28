@@ -30,6 +30,7 @@ class BaserowTest extends TestCase
     {
         $client = new Psr18Client();
         $baserow = new Baserow($client);
+
         $this->assertInstanceOf(Baserow::class, $baserow);
     }
 
