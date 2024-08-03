@@ -42,7 +42,7 @@ class BaserowTest extends TestCase
         $psr18Client = $this->getAuthenticatedClient($responses);
         $baserow = new Baserow($psr18Client);
 
-        assertInstanceOf(Baserow::class, $baserow->authenticate('username', 'password'));
+        assertInstanceOf(Baserow::class, $baserow->login('username', 'password'));
     }
 
     #[test]
@@ -52,9 +52,23 @@ class BaserowTest extends TestCase
 
         $psr18Client = $this->getAuthenticatedClient($responses);
         $baserow = new Baserow($psr18Client);
-        $baserow->authenticate('username', 'password');
+        $baserow->login('username', 'password');
 
         $tables = $baserow->tables();
+
+        $this->assertInstanceOf(Tables::class, $tables);
+    }
+
+    #[test]
+    public function can_retrieve_databases()
+    {
+        $responses = [];
+
+        $psr18Client = $this->getAuthenticatedClient($responses);
+        $baserow = new Baserow($psr18Client);
+        $baserow->login('username', 'password');
+
+        $tables = $baserow->databases()->list();
 
         $this->assertInstanceOf(Tables::class, $tables);
     }

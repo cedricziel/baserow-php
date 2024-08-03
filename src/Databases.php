@@ -4,7 +4,7 @@ namespace CedricZiel\BaserowPhp;
 
 use Psr\Http\Client\ClientInterface;
 
-class Tables
+class Databases
 {
     public function __construct(
         private ?ClientInterface $client = null,
@@ -12,13 +12,6 @@ class Tables
         private ?string $jwt = null,
         private ?string $baseUrl = "https://baserow.io/api/",
     ){
-        if (is_null($this->client)) {
-            throw new \InvalidArgumentException('Client must be provided');
-        }
-
-        if (is_null($this->token) && is_null($this->jwt)) {
-            throw new \InvalidArgumentException('Token must be provided');
-        }
     }
 
     public function list()
@@ -28,7 +21,7 @@ class Tables
         }
 
         $request = $this->client
-            ->createRequest('GET', sprintf('%s%s', rtrim($this->baseUrl, '/'), '/api/database/tables/'))
+            ->createRequest('GET', sprintf('%s%s', rtrim($this->baseUrl, '/'), '/api/database/'))
             ->withHeader('Authorization', sprintf('JWT %s', $this->jwt));
 
         $res = $this->client->sendRequest($request);

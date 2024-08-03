@@ -10,11 +10,17 @@ class Baserow
     public function __construct(
         private ?ClientInterface $client = null,
         private ?string $token = null,
+        private ?string $jwt = null,
         private ?string $baseUrl = "https://baserow.io/api/",
     ){
     }
 
-    public function authenticate(string $username, string $password): static
+    /**
+     * Logs in to the Baserow API for the given username and password.
+     *
+     * This sets the JWT token for the client.
+     */
+    public function login(string $username, string $password): static
     {
         $psr17Factory = new Psr17Factory();
         $request = $psr17Factory
@@ -28,17 +34,37 @@ class Baserow
         $res = $this->client->sendRequest($request);
         $data = json_decode($res->getBody()->getContents(), true);
 
-        return $this->setToken($data['token']);
+        return $this->setJWT($data['token']);
+    }
+
+    /**
+     * Returns a list of databases.
+     */
+    public function databases(): Databases
+    {
+        return new Databases($this->client, $this->token, $this->jwt, $this->baseUrl);
     }
 
     public function tables(): Tables
     {
-        return new Tables($this->client, $this->token);
+        return new Tables($this->client, $this->token, $this->jwt, $this->baseUrl);
     }
 
-    private function setToken(mixed $token): static
+    public function files(): Files
+    {
+        return new Files($this->client, $this->token, $this->jwt, $this->baseUrl);
+    }
+
+    private function setToken(string $token): static
     {
         $this->token = $token;
+
+        return $this;
+    }
+
+    public function setJWT(string $token): static
+    {
+        $this->jwt = $token;
 
         return $this;
     }
